@@ -56,9 +56,53 @@ class TranslateClientTest extends TestCase
      * Test `translate` method.
      *
      * @return void
+     * @covers ::translate()
      */
     public function testTranslate(): void
     {
-        static::markTestIncomplete('Not implemented yet.');
+        $client = new class (['auth_key' => 'test-auth-key']) extends TranslateClient
+        {
+            /**
+             * Get headers
+             *
+             * @return array
+             */
+            public function getHeaders(): array
+            {
+                return $this->headers;
+            }
+
+            /**
+             * @inheritDoc
+             */
+            public function apiCall(string $from, string $to, array $options): string
+            {
+                $content = $options['http']['content'];
+                $text = json_decode($content, true)[0]['Text'];
+                $text = sprintf('translation of "%s" from %s to %s', $text, $from, $to);
+
+                return json_encode([
+                    [
+                        'translations' => [
+                            [$text],
+                        ],
+                    ],
+                ]);
+            }
+        };
+        $expected = '[{"translations":[["translation of \"Hello world!\" from en to it"]]}]';
+        $actual = $client->translate('Hello world!', 'en', 'it');
+        static::assertSame($expected, $actual);
+    }
+
+    /**
+     * Test `apiCall` method.
+     *
+     * @return void
+     * @covers ::apiCall()
+     */
+    public function testApiCall(): void
+    {
+        static::markTestIncomplete('Not implemented yet');
     }
 }

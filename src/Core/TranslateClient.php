@@ -65,7 +65,17 @@ class TranslateClient
     {
         $content = json_encode([['Text' => $text]]);
         $headers = $this->headers;
-        $headers['X-ClientTraceId'] = com_create_guid();
+        $headers['X-ClientTraceId'] = sprintf(
+            '%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(16384, 20479),
+            mt_rand(32768, 49151),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535)
+        );
         $headers['Content-length'] = strlen($content);
         $options = [
             'http' => [
@@ -78,6 +88,20 @@ class TranslateClient
                 'content' => $content,
             ],
         ];
+
+        return $this->apiCall($from, $to, $options);
+    }
+
+    /**
+     * Perform api call to obtain translation
+     *
+     * @param string $from The source language
+     * @param string $to The target language
+     * @param array $options The options
+     * @return string The translation in json format
+     */
+    public function apiCall(string $from, string $to, array $options): string
+    {
         $translation = (string)file_get_contents(
             sprintf('%s&from=%s&to=%s', $this->endpoint, $from, $to),
             false,
