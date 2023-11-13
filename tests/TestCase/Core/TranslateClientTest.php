@@ -75,34 +75,16 @@ class TranslateClientTest extends TestCase
             /**
              * @inheritDoc
              */
-            public function apiCall(string $from, string $to, array $options): string
+            public function apiCall(string $url, string $body, array $headers): string
             {
-                $content = $options['http']['content'];
-                $text = json_decode($content, true)[0]['Text'];
-                $text = sprintf('translation of "%s" from %s to %s', $text, $from, $to);
+                $content = json_decode($body, true);
+                $text = $content[0]['Text'];
 
-                return json_encode([
-                    [
-                        'translations' => [
-                            [$text],
-                        ],
-                    ],
-                ]);
+                return sprintf('translation of "%s" from en to it', $text);
             }
         };
-        $expected = '[{"translations":[["translation of \"Hello world!\" from en to it"]]}]';
+        $expected = 'translation of "Hello world!" from en to it';
         $actual = $client->translate('Hello world!', 'en', 'it');
         static::assertSame($expected, $actual);
-    }
-
-    /**
-     * Test `apiCall` method.
-     *
-     * @return void
-     * @covers ::apiCall()
-     */
-    public function testApiCall(): void
-    {
-        static::markTestIncomplete('Not implemented yet');
     }
 }

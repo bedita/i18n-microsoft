@@ -40,12 +40,13 @@ class TranslatorTest extends TestCase
                 return $this->microsoftClient;
             }
         };
-        $translator->setup(['auth_key' => 'test-auth-key']);
+        $translator->setup(['auth_key' => 'test-auth-key', 'location' => 'test-region']);
         $client = $translator->getMicrosoftClient();
         static::assertNotEmpty($client);
         $expected = [
-            'Content-type' => 'application/json',
+            'Content-Type' => 'application/json',
             'Ocp-Apim-Subscription-Key' => 'test-auth-key',
+            'Ocp-Apim-Subscription-Region' => 'test-region',
         ];
         $reflection = new ReflectionClass($client);
         $property = $reflection->getProperty('headers');
