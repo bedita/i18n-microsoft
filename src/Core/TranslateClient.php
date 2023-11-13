@@ -48,8 +48,9 @@ class TranslateClient
     {
         $this->options = $options;
         $this->headers = [
-            'Content-type' => 'application/json',
+            'Content-Type' => 'application/json',
             'Ocp-Apim-Subscription-Key' => (string)Hash::get($this->options, 'auth_key'),
+            'Ocp-Apim-Subscription-Region' => (string)Hash::get($this->options, 'location'),
         ];
     }
 
@@ -63,27 +64,45 @@ class TranslateClient
      */
     public function translate(string $text, string $from, string $to): string
     {
-        $content = json_encode([['Text' => $text]]);
         $headers = $this->headers;
-        $headers['X-ClientTraceId'] = com_create_guid();
-        $headers['Content-length'] = strlen($content);
-        $options = [
-            'http' => [
-                'header' => implode("\r\n", array_map(
-                    fn ($key, $value) => sprintf('%s: %s', $key, $value),
-                    array_keys($headers),
-                    array_values($headers)
-                )),
-                'method' => 'POST',
-                'content' => $content,
-            ],
-        ];
-        $translation = (string)file_get_contents(
-            sprintf('%s&from=%s&to=%s', $this->endpoint, $from, $to),
-            false,
-            stream_context_create($options)
+        $body = json_encode([['Text' => $text]]);
+        $headers['Content-Length'] = strlen($body);
+        $headers = array_map(
+            function ($key, $val) {
+                return sprintf('%s: %s', $key, $val);
+            },
+            array_keys($headers),
+            array_values($headers)
         );
+        $url = sprintf('%s&from=%s&to=%s', $this->endpoint, $from, $to);
 
-        return json_encode(json_decode($translation), JSON_UNESCAPED_UNICODE);
+        return $this->apiCall($url, $body, $headers);
+    }
+
+    /**
+     * Perform api call to obtain translation
+     *
+     * @param string $url The url to call
+     * @param string $body The json body to pass to api call
+     * @param array $headers The headers
+     * @return string The translation, if any
+     * @codeCoverageIgnore
+     */
+    public function apiCall(string $url, string $body, array $headers): string
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return (string)Hash::get(
+            json_decode($result, true),
+            '0.translations.0.text'
+        );
     }
 }

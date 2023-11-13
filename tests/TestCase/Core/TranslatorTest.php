@@ -17,6 +17,7 @@ namespace BEdita\I18n\Microsoft\Test\Core;
 use BEdita\I18n\Microsoft\Core\TranslateClient;
 use BEdita\I18n\Microsoft\Core\Translator;
 use Cake\TestSuite\TestCase;
+use ReflectionClass;
 
 /**
  * {@see \BEdita\I18n\Microsoft\Core\Translator} Test Case
@@ -39,8 +40,19 @@ class TranslatorTest extends TestCase
                 return $this->microsoftClient;
             }
         };
-        $translator->setup(['auth_key' => 'test-auth-key']);
-        static::assertNotEmpty($translator->getMicrosoftClient());
+        $translator->setup(['auth_key' => 'test-auth-key', 'location' => 'test-region']);
+        $client = $translator->getMicrosoftClient();
+        static::assertNotEmpty($client);
+        $expected = [
+            'Content-Type' => 'application/json',
+            'Ocp-Apim-Subscription-Key' => 'test-auth-key',
+            'Ocp-Apim-Subscription-Region' => 'test-region',
+        ];
+        $reflection = new ReflectionClass($client);
+        $property = $reflection->getProperty('headers');
+        $property->setAccessible(true);
+        $actual = $property->getValue($client);
+        static::assertSame($expected, $actual);
     }
 
     /**
