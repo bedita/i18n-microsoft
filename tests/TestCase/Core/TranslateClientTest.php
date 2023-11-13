@@ -32,7 +32,7 @@ class TranslateClientTest extends TestCase
      */
     public function testConstructor(): void
     {
-        $client = new class (['auth_key' => 'test-auth-key']) extends TranslateClient
+        $client = new class (['auth_key' => 'test-auth-key', 'location' => 'test-region']) extends TranslateClient
         {
             /**
              * Get headers
@@ -45,8 +45,9 @@ class TranslateClientTest extends TestCase
             }
         };
         $expected = [
-            'Content-type' => 'application/json',
+            'Content-Type' => 'application/json',
             'Ocp-Apim-Subscription-Key' => 'test-auth-key',
+            'Ocp-Apim-Subscription-Region' => 'test-region',
         ];
         $actual = $client->getHeaders();
         static::assertSame($expected, $actual);
@@ -60,7 +61,7 @@ class TranslateClientTest extends TestCase
      */
     public function testTranslate(): void
     {
-        $client = new class (['auth_key' => 'test-auth-key']) extends TranslateClient
+        $client = new class (['auth_key' => 'test-auth-key', 'location' => 'test-region']) extends TranslateClient
         {
             /**
              * Get headers
