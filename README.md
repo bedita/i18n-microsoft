@@ -19,9 +19,9 @@ composer require bedita/i18n-microsoft
 
 Note: php version supported is >= 7.4 and < 8.3.
 
-## Microsoft Cloud Translation
+## Microsoft Translator TEXT API
 
-This plugin uses [Microsoft Cloud Translation for PHP](https://cloud.microsoft.com/php/docs/reference/cloud-translate/latest) to translate texts, via [microsoft-cloud-php-translate](https://github.com/microsoftapis/microsoft-cloud-php-translate).
+This plugin uses [Microsoft Translator TEXT API](https://www.microsoft.com/en-us/translator/business/translator-api/) to translate texts.
 
 Usage example:
 ```php
