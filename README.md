@@ -32,5 +32,6 @@ $translator->setup([
     'auth_key' => 'your-auth-key', // Microsoft Translator KEY 1
     'location' => 'your-location', // Microsoft Translator Location/Region i.e. westeurope
 ]);
-$translation = $translator->translate(['Hello world!'], 'en', 'it');
+$result = $translator->translate(['Hello world!'], 'en', 'it');
+// $result is an array, i.e ['translation' => ['Ciao mondo!']]
 ```
