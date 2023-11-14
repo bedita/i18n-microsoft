@@ -28,6 +28,9 @@ Usage example:
 use BEdita\I18n\Microsoft\Core\Translator;
 
 $translator = new Translator();
-$translator->setup(['auth_key' => 'your-auth-key', 'location' => 'your-azure-location']);
+$translator->setup([
+    'auth_key' => 'your-auth-key', // Microsoft Translator KEY 1
+    'location' => 'your-location', // Microsoft Translator Location/Region i.e. westeurope
+]);
 $translation = $translator->translate(['Hello world!'], 'en', 'it');
 ```
