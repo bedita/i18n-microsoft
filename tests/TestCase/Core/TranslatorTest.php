@@ -17,20 +17,22 @@ namespace BEdita\I18n\Microsoft\Test\Core;
 use BEdita\I18n\Microsoft\Core\TranslateClient;
 use BEdita\I18n\Microsoft\Core\Translator;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use ReflectionClass;
 
 /**
  * {@see \BEdita\I18n\Microsoft\Core\Translator} Test Case
- *
- * @covers \BEdita\I18n\Microsoft\Core\Translator
  */
+#[CoversClass(Translator::class)]
+#[CoversMethod(Translator::class, 'setup')]
+#[CoversMethod(Translator::class, 'translate')]
 class TranslatorTest extends TestCase
 {
     /**
      * Test setup.
      *
      * @return void
-     * @covers ::setup()
      */
     public function testSetup(): void
     {
@@ -59,7 +61,6 @@ class TranslatorTest extends TestCase
      * Test translate.
      *
      * @return void
-     * @covers ::translate()
      */
     public function testTranslate(): void
     {
