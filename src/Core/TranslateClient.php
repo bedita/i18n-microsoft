@@ -72,7 +72,7 @@ class TranslateClient
                 return sprintf('%s: %s', $key, $val);
             },
             array_keys($headers),
-            array_values($headers)
+            array_values($headers),
         );
         $url = sprintf('%s&from=%s&to=%s', $this->endpoint, $from, $to);
 
@@ -102,7 +102,7 @@ class TranslateClient
 
         return (string)Hash::get(
             json_decode($result, true),
-            '0.translations.0.text'
+            '0.translations.0.text',
         );
     }
 }
