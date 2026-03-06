@@ -3,6 +3,7 @@
 [![Github Actions](https://github.com/bedita/i18n-microsoft/workflows/php/badge.svg)](https://github.com/bedita/i18n-microsoft/actions?query=workflow%3Aphp)
 [![codecov](https://codecov.io/gh/bedita/i18n-microsoft/branch/main/graph/badge.svg)](https://codecov.io/gh/bedita/i18n-microsoft)
 [![phpstan](https://img.shields.io/badge/PHPStan-level%205-brightgreen.svg)](https://phpstan.org)
+[![psalm](https://img.shields.io/badge/psalm-level%208-brightgreen.svg)](https://psalm.dev)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bedita/i18n-microsoft/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/bedita/i18n-microsoft/?branch=main)
 [![image](https://img.shields.io/packagist/v/bedita/i18n-microsoft.svg?label=stable)](https://packagist.org/packages/bedita/i18n-microsoft)
 [![image](https://img.shields.io/github/license/bedita/i18n-microsoft.svg)](https://github.com/bedita/i18n-microsoft/blob/main/LICENSE.LGPL)

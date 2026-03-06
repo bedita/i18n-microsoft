@@ -98,7 +98,6 @@ class TranslateClient
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $result = curl_exec($ch);
-        curl_close($ch);
 
         return (string)Hash::get(
             json_decode($result, true),
